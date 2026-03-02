@@ -1,6 +1,9 @@
 export interface Song {
   title: string;
   youtubeUrl?: string;
+  composer?: string;
+  lyricist?: string;
+  music?: string;
 }
 
 export interface Album {
@@ -11,6 +14,13 @@ export interface Album {
   coverImage: string;
   songs: Song[];
 }
+
+// Default credits for Sonam J Sherpa's songs
+export const DEFAULT_CREDITS = {
+  composer: 'Sonam J Sherpa',
+  lyricist: 'Sonam J Sherpa',
+  music: 'Sonam J Sherpa',
+};
 
 export const albumsData: Album[] = [
   {
@@ -49,8 +59,14 @@ export const albumsData: Album[] = [
   },
 ];
 
+// Type for songs with album info attached (used in VideoReel)
+export interface VideoSong extends Song {
+  albumTitle: string;
+  albumCover: string;
+}
+
 // Get all songs with YouTube URLs for the video reel
-export const getAllVideoSongs = () => {
+export const getAllVideoSongs = (): VideoSong[] => {
   return albumsData
     .flatMap((album) =>
       album.songs
