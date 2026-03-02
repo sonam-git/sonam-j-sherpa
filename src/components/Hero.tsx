@@ -42,21 +42,27 @@ export default function Hero() {
         </div>
         
         {/* Content */}
-        <div className="relative z-10">
-          {/* Welcome badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-400/10 mb-2">
-            <span className="text-amber-600 dark:text-amber-400 text-[10px] sm:text-xs font-medium tracking-wider uppercase">
-              ♪ Welcome to my world ♪
+        <div className="relative z-10 flex flex-col items-center">
+          {/* Welcome badge - improved UI */}
+          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-100 via-amber-50 to-amber-100 dark:from-amber-400/20 dark:via-amber-400/10 dark:to-amber-400/20 border border-amber-200/50 dark:border-amber-400/20 shadow-sm mb-3">
+            <span className="text-amber-500 dark:text-amber-400 text-sm">♪</span>
+            <span className="text-amber-700 dark:text-amber-300 text-[10px] sm:text-xs font-medium tracking-wider uppercase">
+              Welcome to my world
             </span>
+            <span className="text-amber-500 dark:text-amber-400 text-sm">♪</span>
           </div>
           
-          {/* Name */}
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-            Sonam J Sherpa
+          {/* Name - English and Tibetan on one line */}
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white whitespace-nowrap">
+            Sonam J Sherpa <span className="text-gray-400 dark:text-gray-500 font-normal">|</span> བསོད་ནམས་ ཇེ་ ཤེར་པ་
           </h1>
-          <h2 className="text-base sm:text-lg font-semibold text-gray-700 dark:text-gray-300 mt-0.5">
-            བསོད་ནམས་ཇེ་ཤེར་པ་
-          </h2>
+          
+          {/* Role - Singer | Musician */}
+          <p className="text-amber-600 dark:text-amber-400 text-sm sm:text-base font-medium mt-1 flex items-center gap-2">
+            <span className="text-gray-400 dark:text-gray-600">♪</span>
+            Singer | Musician
+            <span className="text-gray-400 dark:text-gray-600">♪</span>
+          </p>
         </div>
         
         {/* Bottom musical line */}

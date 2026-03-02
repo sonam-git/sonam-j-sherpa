@@ -12,9 +12,15 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'via.placeholder.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+      },
     ],
-    // Allow placeholder images during development
-    unoptimized: process.env.NODE_ENV === 'development',
   },
 };
 
