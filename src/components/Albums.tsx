@@ -91,8 +91,15 @@ export default function Albums() {
   const hasNext = currentSongIdx < currentAlbumSongs.length - 1;
 
   return (
-    <section id="albums" className="py-20 md:py-32 bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="albums" className="relative py-20 md:py-32 overflow-hidden transition-colors duration-300">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/sj-logo.png')", opacity: 0.15 }}
+      />
+      {/* Theme-aware Overlay */}
+      <div className="absolute inset-0 bg-gray-100/70 dark:bg-gray-900/80 pointer-events-none" />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
@@ -136,7 +143,7 @@ export default function Albums() {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-6 left-6 right-6">
                     <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                       {currentAlbum.title}
@@ -222,7 +229,7 @@ export default function Albums() {
       {/* Video Modal - rendered via portal to ensure it's above everything */}
       {modalSong && modalSong.youtubeUrl && typeof window !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+          className="fixed inset-0 z-9999 flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"
@@ -269,7 +276,7 @@ export default function Albums() {
             </div>
 
             {/* Song Info */}
-            <div className="p-6 bg-gradient-to-b from-gray-800 to-gray-900">
+            <div className="p-6 bg-linear-to-b from-gray-800 to-gray-900">
               <h3 
                 id="modal-title"
                 className="text-xl sm:text-2xl font-bold text-white mb-1"

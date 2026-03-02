@@ -38,8 +38,15 @@ const socialLinks = [
 
 export default function SocialLinks() {
   return (
-    <section className="py-16 md:py-24 bg-gray-200 dark:bg-gray-800 transition-colors duration-300">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative py-16 md:py-24 overflow-hidden transition-colors duration-300">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/about-photo.jpg')", opacity: 0.12 }}
+      />
+      {/* Theme-aware Overlay */}
+      <div className="absolute inset-0 bg-gray-200/70 dark:bg-gray-800/80 pointer-events-none" />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           {/* Section Header */}
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">

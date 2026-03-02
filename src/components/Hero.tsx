@@ -115,15 +115,14 @@ export default function Hero() {
 
             {/* Tagline */}
             <p className="text-xl lg:text-2xl text-gray-200 mb-6 animate-slide-up animation-delay-200">
-              <span className="text-amber-400">Singer</span> |{' '}
-              <span className="text-purple-400">Performer</span> |{' '}
-              <span className="text-cyan-400">Full-Stack Developer</span>
+             |{' '} <span className="text-amber-400">Singer</span> |{' '}
+              <span className="text-purple-400">Musician</span> |{' '}
             </p>
 
             {/* Intro Text */}
             <p className="text-gray-300 text-base lg:text-lg max-w-xl mb-8 animate-fade-in animation-delay-400 leading-relaxed">
               From the majestic Himalayas of Nepal to stages across the world —
-              sharing stories through music and building digital experiences.
+sharing stories through music and preserving Sherpa melodies for future generations.
             </p>
 
             {/* CTA Buttons */}

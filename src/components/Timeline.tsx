@@ -38,8 +38,15 @@ const timelineData = [
 
 export default function Timeline() {
   return (
-    <section id="career" className="py-20 md:py-32 bg-gray-100 dark:bg-gray-800 transition-colors duration-500">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="career" className="relative py-20 md:py-32 overflow-hidden transition-colors duration-500">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/images/about-photo.jpg')", opacity: 0.12 }}
+      />
+      {/* Theme-aware Overlay */}
+      <div className="absolute inset-0 bg-gray-100/70 dark:bg-gray-800/80" />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
@@ -56,7 +63,7 @@ export default function Timeline() {
           {/* Timeline */}
           <div className="relative">
             {/* Center Line */}
-            <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-400 via-purple-500 to-cyan-400" />
+            <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-linear-to-b from-amber-400 via-purple-500 to-cyan-400" />
 
             {/* Timeline Items */}
             <div className="space-y-12">
