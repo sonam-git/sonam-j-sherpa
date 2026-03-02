@@ -1,0 +1,11 @@
+export { default as Navbar } from './Navbar';
+export { default as Hero } from './Hero';
+export { default as About } from './About';
+export { default as Timeline } from './Timeline';
+export { default as Albums } from './Albums';
+export { default as Gallery } from './Gallery';
+export { default as Spotlight } from './Spotlight';
+export { default as SocialLinks } from './SocialLinks';
+export { default as Contact } from './Contact';
+export { default as Footer } from './Footer';
+export { default as VideoReel } from './VideoReel';

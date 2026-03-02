@@ -1,0 +1,13 @@
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#312e81"/>
+      <stop offset="100%" style="stop-color:#1e1b4b"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg)"/>
+  <circle cx="300" cy="250" r="120" fill="#4c1d95"/>
+  <text x="300" y="260" fill="#fbbf24" font-family="system-ui" font-size="80" text-anchor="middle">♪</text>
+  <text x="300" y="420" fill="#f3f4f6" font-family="system-ui" font-size="28" font-weight="bold" text-anchor="middle">SONAMING VOL 2</text>
+  <text x="300" y="460" fill="#a5b4fc" font-family="system-ui" font-size="18" text-anchor="middle">Sherpa Album</text>
+</svg>
