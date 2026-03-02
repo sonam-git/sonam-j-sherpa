@@ -26,72 +26,43 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
       </div>
 
-      {/* === SMALL SCREEN LAYOUT (Stacked Rows) === */}
+      {/* === SMALL SCREEN LAYOUT (Image as full background for top section) === */}
       
-      {/* Row 1: Welcome & Name (18% height on mobile) - Musical themed */}
-      <div className="lg:hidden relative flex flex-col items-center justify-center h-[18vh] overflow-hidden px-4 text-center pt-16">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-gray-100 to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" />
-        
-        {/* Floating music notes decoration */}
-        <div className="absolute inset-0 overflow-hidden opacity-10 dark:opacity-5">
-          <span className="absolute top-2 left-4 text-2xl text-amber-500 animate-pulse">♪</span>
-          <span className="absolute top-4 right-8 text-lg text-purple-500 animate-pulse" style={{ animationDelay: '0.5s' }}>♫</span>
-          <span className="absolute bottom-3 left-1/4 text-xl text-cyan-500 animate-pulse" style={{ animationDelay: '1s' }}>♪</span>
-          <span className="absolute bottom-2 right-1/4 text-2xl text-amber-500 animate-pulse" style={{ animationDelay: '0.3s' }}>♬</span>
-        </div>
-        
-        {/* Content */}
-        <div className="relative z-10 flex flex-col items-center">
-          {/* Welcome badge - improved UI */}
-          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-amber-100 via-amber-50 to-amber-100 dark:from-amber-400/20 dark:via-amber-400/10 dark:to-amber-400/20 border border-amber-200/50 dark:border-amber-400/20 shadow-sm mb-3">
-            <span className="text-amber-500 dark:text-amber-400 text-sm">♪</span>
-            <span className="text-amber-700 dark:text-amber-300 text-[10px] sm:text-xs font-medium tracking-wider uppercase">
-              Welcome to my world
-            </span>
-            <span className="text-amber-500 dark:text-amber-400 text-sm">♪</span>
-          </div>
-          
-          {/* Name - English and Tibetan on one line */}
-          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white whitespace-nowrap">
-            Sonam J Sherpa <span className="text-gray-400 dark:text-gray-500 font-normal">|</span> བསོད་ནམས་ ཇེ་ ཤེར་པ་
-          </h1>
-          
-          {/* Role - Singer | Musician */}
-          <p className="text-amber-600 dark:text-amber-400 text-sm sm:text-base font-medium mt-1 flex items-center gap-2">
-            <span className="text-gray-400 dark:text-gray-600">♪</span>
-            Singer | Musician
-            <span className="text-gray-400 dark:text-gray-600">♪</span>
-          </p>
-        </div>
-        
-        {/* Bottom musical line */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
-      </div>
-
-      {/* Row 2: Image (40% height on mobile) */}
-      <div className="lg:hidden relative h-[40vh] w-full">
+      {/* Hero Image - extends from top to cover Row 1 + Row 2 */}
+      <div className="lg:hidden relative h-[58vh] w-full">
         <Image
           src="/images/hero.png"
           alt="Sonam J Sherpa"
           fill
-          className="object-cover object-top"
+          className="object-content object-top"
           priority
           quality={85}
         />
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-        {/* Role badges */}
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 px-4">
-          <span className="px-3 py-1 bg-amber-500/90 text-white text-xs font-semibold rounded-full">
-            Singer
-          </span>
-          <span className="px-3 py-1 bg-purple-500/90 text-white text-xs font-semibold rounded-full">
-            Performer
-          </span>
-          <span className="px-3 py-1 bg-cyan-500/90 text-white text-xs font-semibold rounded-full">
-            Developer
-          </span>
+        {/* Gradient overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
+        
+        {/* Content at bottom - replacing badges */}
+        <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center px-4 text-center">
+          {/* Welcome badge */}
+          <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg mb-2">
+            <span className="text-amber-400 text-sm">♪</span>
+            <span className="text-white/90 text-[10px] sm:text-xs font-medium tracking-wider uppercase">
+              Welcome to my world
+            </span>
+            <span className="text-amber-400 text-sm">♪</span>
+          </div>
+          
+          {/* Name - English and Tibetan on one line */}
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white whitespace-nowrap drop-shadow-lg">
+            Sonam J Sherpa <span className="text-white/50 font-normal">|</span> བསོད་ནམས་ ཇེ་ ཤེར་པ་
+          </h1>
+          
+          {/* Role - Singer | Musician */}
+          <p className="text-amber-400 text-sm sm:text-base font-medium mt-1 flex items-center gap-2 drop-shadow-md">
+            <span className="text-white/40">♪</span>
+            Singer | Musician
+            <span className="text-white/40">♪</span>
+          </p>
         </div>
       </div>
 
