@@ -178,19 +178,18 @@ export default function About() {
                   </div>
 
                   <p className="text-gray-800 dark:text-gray-100 text-base sm:text-md leading-relaxed">
-                    My first major performance took place during a Tibetan
-                    Lhosar celebration in Kathmandu, a moment that opened doors
+                    My first major performance took place during an event Sherpa Star in Boudha, Kathmandu, a moment that opened doors
                     to many new opportunities. Over the years, I have performed
                     across Nepal — from Tatopani, Sindhupalchowk to Dolakha Jiri
                     and my hometown Solukhumbu Khumjung — connecting with
                     audiences through music rooted in culture and emotion.
                   </p>
                   <p className="text-gray-800 dark:text-gray-100 text-base sm:text-md leading-relaxed">
-                    In 2017, I had the honor of performing internationally in
-                    Japan and the United States. Encouraged by senior musicians
+                    Encouraged by senior musicians who recognized my passion and potential,
                     and supported by the love of my audiences, I began creating
                     original music that blends Sherpa and Nepali traditions with
-                    contemporary sounds.
+                    contemporary sounds. In 2017, I had the honor of performing internationally in
+                    Japan and the United States.
                   </p>
 
                   <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
@@ -289,7 +288,7 @@ export default function About() {
                   </p>
 
                   <div className="bg-gray-100 dark:bg-gray-800/50 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                    <p className="text-gray-800 dark:text-gray-100 text-base sm:text-md leading-relaxed font-medium">
+                   <p className="text-gray-800 dark:text-gray-100 text-base leading-relaxed">
                       My mission is simple yet profound: to help preserve Sherpa
                       musical heritage, inspire the younger generation to
                       reconnect with their roots, and contribute—even if just

@@ -34,7 +34,7 @@ const footerLinks = {
     },
     {
       name: 'TikTok',
-      href: 'https://www.tiktok.com/@sonamjsherpaOfficial',
+      href: 'https://www.tiktok.com/@sjsherpa',
       icon: TikTokIcon,
     },
   ],
@@ -65,7 +65,7 @@ export default function Footer() {
               Sonam J Sherpa
             </Link>
             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-              Singer, performer, and full-stack developer from the Everest Region
+              Singer, and Musician from the Everest Region
               of Nepal, now based in California, USA.
             </p>
           </div>
@@ -114,7 +114,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 dark:text-gray-500 text-sm">
-            © {currentYear} Sonam J Sherpa. All rights reserved.
+            © {currentYear} Sonam J Sherpa | All rights reserved
           </p>
           <p className="text-gray-500 dark:text-gray-600 text-sm">
             Developed with Next.js & Tailwind CSS
