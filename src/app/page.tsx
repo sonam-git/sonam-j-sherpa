@@ -17,8 +17,8 @@ export default function Home() {
       <Albums />
       <Gallery />
       <Spotlight />
-      <SocialLinks />
       <Contact />
+       <SocialLinks />
       <Footer />
     </>
   );

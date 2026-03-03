@@ -77,10 +77,10 @@ export default function Hero() {
       </div>
 
       {/* Row 4: Text & CTA (27% height on mobile) */}
-      <div className="lg:hidden flex flex-col items-center justify-center h-[27vh] bg-gradient-to-t from-gray-100 via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 text-center">
+      <div className="lg:hidden flex flex-col items-center justify-center h-[27vh] bg-linear-to-t from-gray-100 via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 text-center">
         <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base max-w-md mb-3 leading-relaxed">
           From the majestic Himalayas of Nepal to stages across the world —
-          sharing stories through music and building digital experiences.
+sharing stories through music and inspiring younger generations to reconnect with Sherpa melodies while preserving Sherpa melodies for future generations.
         </p>
         <div className="flex flex-row items-center justify-center gap-3">
           <a
