@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { IoGrid, IoMusicalNotes, IoCalendar, IoMic, IoPeople, IoChevronBack, IoChevronForward, IoClose } from 'react-icons/io5';
+import { ModalImageLoader } from './ui/LoadingSpinner';
 
 interface GalleryImage {
   src: string;
@@ -209,9 +210,9 @@ export default function Gallery() {
   const [isSticky, setIsSticky] = useState(false);
   const [modalTouchStart, setModalTouchStart] = useState<number | null>(null);
   const [modalTouchEnd, setModalTouchEnd] = useState<number | null>(null);
+  const [imageLoading, setImageLoading] = useState(true);
   const sectionRef = useRef<HTMLElement>(null);
   const tabBarRef = useRef<HTMLDivElement>(null);
-  const lastScrollY = useRef(0);
 
   const categoryTabs = getCategoryTabs();
   const filteredImages = activeCategory === 'All' ? galleryImages : galleryImages.filter((img) => img.category === activeCategory);
@@ -235,37 +236,45 @@ export default function Gallery() {
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
     if (isLeftSwipe && selectedIndex !== null && selectedIndex < filteredImages.length - 1) {
+      setImageLoading(true);
       setSelectedIndex(selectedIndex + 1);
     }
     if (isRightSwipe && selectedIndex !== null && selectedIndex > 0) {
+      setImageLoading(true);
       setSelectedIndex(selectedIndex - 1);
     }
   };
 
   useEffect(() => { const id = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(id); }, []);
 
-  // Sticky tab bar logic
+  // Sticky tab bar logic - always sticky when within section
   useEffect(() => {
     const handleScroll = () => {
       if (!sectionRef.current || !tabBarRef.current) return;
       const sectionRect = sectionRef.current.getBoundingClientRect();
-      const navbarHeight = 80;
-      const currentScrollY = window.scrollY;
-      const scrollingUp = currentScrollY < lastScrollY.current;
-      const inGallerySection = sectionRect.top < navbarHeight && sectionRect.bottom > navbarHeight + 100;
-      setIsSticky(inGallerySection && scrollingUp);
-      lastScrollY.current = currentScrollY;
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64; // md:h-20 : h-16
+      const tabBarHeight = 70;
+      // Sticky when section header has scrolled past navbar and section is still visible
+      const inGallerySection = sectionRect.top < navbarHeight - 150 && sectionRect.bottom > navbarHeight + tabBarHeight + 100;
+      setIsSticky(inGallerySection);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handlePrev = useCallback(() => {
-    if (selectedIndex !== null && selectedIndex > 0) setSelectedIndex(selectedIndex - 1);
+    if (selectedIndex !== null && selectedIndex > 0) {
+      setImageLoading(true);
+      setSelectedIndex(selectedIndex - 1);
+    }
   }, [selectedIndex]);
 
   const handleNext = useCallback(() => {
-    if (selectedIndex !== null && selectedIndex < filteredImages.length - 1) setSelectedIndex(selectedIndex + 1);
+    if (selectedIndex !== null && selectedIndex < filteredImages.length - 1) {
+      setImageLoading(true);
+      setSelectedIndex(selectedIndex + 1);
+    }
   }, [selectedIndex, filteredImages.length]);
 
   const handleClose = useCallback(() => { setSelectedIndex(null); }, []);
@@ -309,7 +318,7 @@ export default function Gallery() {
           {/* Sticky Tab Bar Container */}
           <div 
             ref={tabBarRef}
-            className={`transition-all duration-300 mb-12 ${isSticky ? 'fixed top-20 left-0 right-0 z-40 bg-gray-200/95 dark:bg-gray-800/95 backdrop-blur-md py-4 shadow-lg border-b border-amber-400/30' : ''}`}
+            className={`transition-all duration-300 mb-12 ${isSticky ? 'fixed top-16 md:top-20 left-0 right-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md py-3 shadow-lg border-b border-amber-400/30' : ''}`}
           >
             <div className={isSticky ? 'container mx-auto px-4 sm:px-6 lg:px-8' : ''}>
               <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
@@ -350,13 +359,13 @@ export default function Gallery() {
           <MobileGalleryCarousel
             key={activeCategory}
             images={filteredImages}
-            onImageClick={(index) => setSelectedIndex(index)}
+            onImageClick={(index) => { setImageLoading(true); setSelectedIndex(index); }}
           />
 
           {/* Desktop Grid */}
           <div className="hidden sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {filteredImages.map((image, index) => (
-              <button key={image.src} onClick={() => setSelectedIndex(index)}
+              <button key={image.src} onClick={() => { setImageLoading(true); setSelectedIndex(index); }}
                 className="group relative aspect-square overflow-hidden rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-gray-200 dark:focus:ring-offset-gray-800 shadow-lg">
                 <Image src={image.src} alt={image.alt} fill className="object-cover transition-transform duration-500 group-hover:scale-110" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300" />
@@ -384,14 +393,21 @@ export default function Gallery() {
           >
             {/* Image Container */}
             <div className="relative w-full max-h-[65vh] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+              {imageLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-10">
+                  <ModalImageLoader />
+                </div>
+              )}
               <Image 
+                key={selectedImage.src}
                 src={selectedImage.src} 
                 alt={selectedImage.alt} 
                 width={1200}
                 height={800}
-                className="w-full h-auto max-h-[65vh] object-contain bg-black" 
+                className={`w-full h-auto max-h-[65vh] object-contain bg-black transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`} 
                 sizes="(max-width: 768px) 95vw, 80vw" 
                 priority 
+                onLoad={() => setImageLoading(false)}
               />
               {/* Caption overlay at bottom of image */}
               <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/90 via-black/60 to-transparent p-3 md:p-4">

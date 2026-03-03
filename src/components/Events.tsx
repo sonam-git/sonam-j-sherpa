@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { HiCalendar, HiClock, HiSparkles, HiChevronLeft, HiChevronRight, HiX } from "react-icons/hi";
 import BookingCTA from "./BookingCTA";
+import { ModalImageLoader } from "./ui/LoadingSpinner";
 
 interface EventItem {
   src: string;
@@ -142,7 +143,7 @@ function MobileCarousel({ events, isUpcoming = false, onEventClick }: MobileCaro
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
             {events.map((event, index) => (
-              <div key={index} className="w-full flex-shrink-0 px-1">
+              <div key={index} className="w-full shrink-0 px-1">
                 <EventCard
                   event={event}
                   isUpcoming={isUpcoming}
@@ -210,12 +211,14 @@ interface EventModalProps {
 }
 
 function EventModal({ events, currentIndex, isOpen, onClose, onPrevious, onNext }: EventModalProps) {
+  const [imageLoading, setImageLoading] = useState(true);
+  
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (!isOpen) return;
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft") onPrevious();
-      if (e.key === "ArrowRight") onNext();
+      if (e.key === "ArrowLeft") { setImageLoading(true); onPrevious(); }
+      if (e.key === "ArrowRight") { setImageLoading(true); onNext(); }
     },
     [isOpen, onClose, onPrevious, onNext]
   );
@@ -239,6 +242,16 @@ function EventModal({ events, currentIndex, isOpen, onClose, onPrevious, onNext 
   const hasPrevious = events.length > 1;
   const hasNext = events.length > 1;
 
+  const handlePrevious = () => {
+    setImageLoading(true);
+    onPrevious();
+  };
+
+  const handleNextClick = () => {
+    setImageLoading(true);
+    onNext();
+  };
+
   return createPortal(
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       {/* Backdrop */}
@@ -251,13 +264,20 @@ function EventModal({ events, currentIndex, isOpen, onClose, onPrevious, onNext 
       <div className="relative w-full max-w-3xl flex flex-col items-center">
         {/* Image Container */}
         <div className="relative w-full aspect-3/4 max-h-[70vh] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+          {imageLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-10">
+              <ModalImageLoader />
+            </div>
+          )}
           <Image
+            key={currentEvent.src}
             src={currentEvent.src}
             alt={currentEvent.alt}
             fill
-            className="object-contain bg-black"
+            className={`object-contain bg-black transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
             sizes="(max-width: 768px) 100vw, 800px"
             priority
+            onLoad={() => setImageLoading(false)}
           />
         </div>
 
@@ -269,7 +289,7 @@ function EventModal({ events, currentIndex, isOpen, onClose, onPrevious, onNext 
         {/* Navigation Controls */}
         <div className="flex items-center justify-center gap-3 mt-6">
           <button
-            onClick={onPrevious}
+            onClick={handlePrevious}
             disabled={!hasPrevious}
             className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300 ${
               hasPrevious
@@ -292,7 +312,7 @@ function EventModal({ events, currentIndex, isOpen, onClose, onPrevious, onNext 
           </button>
 
           <button
-            onClick={onNext}
+            onClick={handleNextClick}
             disabled={!hasNext}
             className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all duration-300 ${
               hasNext
@@ -321,8 +341,26 @@ export default function Events() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalEvents, setModalEvents] = useState<EventItem[]>([]);
   const [modalIndex, setModalIndex] = useState(0);
+  const [isSticky, setIsSticky] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const tabBarRef = useRef<HTMLDivElement>(null);
 
   const activeUpcomingEvents = getActiveUpcomingEvents();
+
+  // Sticky tab bar logic
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current || !tabBarRef.current) return;
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64;
+      const tabBarHeight = 70;
+      const inEventsSection = sectionRect.top < navbarHeight - 150 && sectionRect.bottom > navbarHeight + tabBarHeight + 100;
+      setIsSticky(inEventsSection);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const openModal = (events: EventItem[], index: number) => {
     setModalEvents(events);
@@ -345,6 +383,7 @@ export default function Events() {
   return (
     <section
       id="events"
+      ref={sectionRef}
       className="relative py-20 md:py-32 overflow-hidden transition-colors duration-500"
     >
       {/* Background Image */}
@@ -368,33 +407,47 @@ export default function Events() {
             <div className="w-24 h-1 bg-amber-500 dark:bg-amber-400 mx-auto rounded-full mt-6" />
           </div>
 
-          {/* Tab Buttons */}
-          <div className="flex justify-center mb-10">
-            <div className="flex gap-2 p-1.5 bg-white dark:bg-gray-900 rounded-xl shadow-md">
-              <button
-                onClick={() => setActiveTab("upcoming")}
-                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 ${
-                  activeTab === "upcoming"
-                    ? "bg-amber-500 text-white shadow-md"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
-              >
-                <HiCalendar className="w-5 h-5" />
-                Upcoming Events
-              </button>
-              <button
-                onClick={() => setActiveTab("past")}
-                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 ${
-                  activeTab === "past"
-                    ? "bg-amber-500 text-white shadow-md"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
-              >
-                <HiClock className="w-5 h-5" />
-                Past Events
-              </button>
+          {/* Tab Buttons - Sticky */}
+          <div 
+            ref={tabBarRef}
+            className={`transition-all duration-300 mb-10 ${
+              isSticky 
+                ? 'fixed top-16 md:top-20 left-0 right-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md py-3 shadow-lg border-b border-amber-400/30' 
+                : ''
+            }`}
+          >
+            <div className={`flex justify-center ${isSticky ? 'container mx-auto px-4' : ''}`}>
+              <div className="flex gap-2 p-1.5 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+                <button
+                  onClick={() => setActiveTab("upcoming")}
+                  className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 ${
+                    activeTab === "upcoming"
+                      ? "bg-amber-500 text-white shadow-md"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  <HiCalendar className="w-5 h-5" />
+                  <span className="hidden sm:inline">Upcoming Events</span>
+                  <span className="sm:hidden">Upcoming</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab("past")}
+                  className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 ${
+                    activeTab === "past"
+                      ? "bg-amber-500 text-white shadow-md"
+                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  <HiClock className="w-5 h-5" />
+                  <span className="hidden sm:inline">Past Events</span>
+                  <span className="sm:hidden">Past</span>
+                </button>
+              </div>
             </div>
           </div>
+          
+          {/* Spacer when sticky */}
+          {isSticky && <div className="h-16" />}
 
           {/* Tab Content */}
           <div className="min-h-100">

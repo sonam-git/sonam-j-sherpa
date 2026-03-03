@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { IoChevronBack, IoChevronForward, IoClose } from 'react-icons/io5';
+import { ModalImageLoader } from './ui/LoadingSpinner';
 
 interface ArticleImage {
   src: string;
@@ -162,6 +163,7 @@ export default function Spotlight() {
   const [mounted, setMounted] = useState(false);
   const [modalTouchStart, setModalTouchStart] = useState<number | null>(null);
   const [modalTouchEnd, setModalTouchEnd] = useState<number | null>(null);
+  const [imageLoading, setImageLoading] = useState(true);
 
   const selectedArticle = selectedIndex !== null ? articleImages[selectedIndex] : null;
 
@@ -183,9 +185,11 @@ export default function Spotlight() {
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
     if (isLeftSwipe && selectedIndex !== null && selectedIndex < articleImages.length - 1) {
+      setImageLoading(true);
       setSelectedIndex(selectedIndex + 1);
     }
     if (isRightSwipe && selectedIndex !== null && selectedIndex > 0) {
+      setImageLoading(true);
       setSelectedIndex(selectedIndex - 1);
     }
   };
@@ -193,11 +197,17 @@ export default function Spotlight() {
   useEffect(() => { const id = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(id); }, []);
 
   const handlePrev = useCallback(() => {
-    if (selectedIndex !== null && selectedIndex > 0) setSelectedIndex(selectedIndex - 1);
+    if (selectedIndex !== null && selectedIndex > 0) {
+      setImageLoading(true);
+      setSelectedIndex(selectedIndex - 1);
+    }
   }, [selectedIndex]);
 
   const handleNext = useCallback(() => {
-    if (selectedIndex !== null && selectedIndex < articleImages.length - 1) setSelectedIndex(selectedIndex + 1);
+    if (selectedIndex !== null && selectedIndex < articleImages.length - 1) {
+      setImageLoading(true);
+      setSelectedIndex(selectedIndex + 1);
+    }
   }, [selectedIndex]);
 
   const handleClose = useCallback(() => { setSelectedIndex(null); }, []);
@@ -239,13 +249,13 @@ export default function Spotlight() {
           {/* Mobile Carousel */}
           <MobileSpotlightCarousel
             articles={articleImages}
-            onArticleClick={(index) => setSelectedIndex(index)}
+            onArticleClick={(index) => { setImageLoading(true); setSelectedIndex(index); }}
           />
 
           {/* Desktop Grid */}
           <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {articleImages.map((article, index) => (
-              <button key={article.src} onClick={() => setSelectedIndex(index)}
+              <button key={article.src} onClick={() => { setImageLoading(true); setSelectedIndex(index); }}
                 className="group bg-white dark:bg-gray-800/50 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-amber-400/50 transition-all duration-300 hover:transform hover:-translate-y-1 shadow-sm hover:shadow-lg text-left focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-900">
                 <div className="relative aspect-4/3 overflow-hidden">
                   <Image src={article.src} alt={article.alt} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
@@ -281,14 +291,21 @@ export default function Spotlight() {
           >
             {/* Image Container */}
             <div className="relative w-full max-h-[60vh] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+              {imageLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/70 z-10">
+                  <ModalImageLoader />
+                </div>
+              )}
               <Image 
+                key={selectedArticle.src}
                 src={selectedArticle.src} 
                 alt={selectedArticle.alt} 
                 width={1200}
                 height={800}
-                className="w-full h-auto max-h-[60vh] object-contain bg-black" 
+                className={`w-full h-auto max-h-[60vh] object-contain bg-black transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`} 
                 sizes="(max-width: 768px) 95vw, 80vw" 
                 priority 
+                onLoad={() => setImageLoading(false)}
               />
               {/* Caption overlay at bottom of image */}
               <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/90 via-black/60 to-transparent p-3 md:p-4">

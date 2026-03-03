@@ -1,12 +1,16 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { MailIcon } from './icons/SocialIcons';
 
 interface FormData {
   name: string;
   email: string;
+  subject: string;
   message: string;
+  // Honeypot fields
+  website: string;
+  phone: string;
 }
 
 interface FormStatus {
@@ -18,7 +22,10 @@ export default function Contact() {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
+    subject: '',
     message: '',
+    website: '',
+    phone: '',
   });
 
   const [status, setStatus] = useState<FormStatus>({
@@ -27,6 +34,12 @@ export default function Contact() {
   });
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [formLoadTime, setFormLoadTime] = useState<number>(0);
+
+  // Record when form was loaded (for bot detection)
+  useEffect(() => {
+    setFormLoadTime(Date.now());
+  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<FormData> = {};
@@ -39,8 +52,14 @@ export default function Contact() {
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.subject.trim()) {
+      newErrors.subject = 'Subject is required';
+    } else if (formData.subject.trim().length < 3) {
+      newErrors.subject = 'Subject must be at least 3 characters';
     }
 
     if (!formData.message.trim()) {
@@ -68,7 +87,15 @@ export default function Contact() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          website: formData.website, // Honeypot
+          phone: formData.phone, // Honeypot
+          timestamp: formLoadTime, // For timing check
+        }),
       });
 
       const data = await response.json();
@@ -76,16 +103,17 @@ export default function Contact() {
       if (response.ok) {
         setStatus({
           type: 'success',
-          message: 'Thank you! Your message has been sent successfully.',
+          message: data.message || 'Thank you! Your message has been sent successfully.',
         });
-        setFormData({ name: '', email: '', message: '' });
+        setFormData({ name: '', email: '', subject: '', message: '', website: '', phone: '' });
+        setFormLoadTime(Date.now()); // Reset timer
       } else {
         throw new Error(data.error || 'Failed to send message');
       }
-    } catch {
+    } catch (err) {
       setStatus({
         type: 'error',
-        message: 'Sorry, something went wrong. Please try again later.',
+        message: err instanceof Error ? err.message : 'Sorry, something went wrong. Please try again later.',
       });
     }
   };
@@ -152,13 +180,37 @@ export default function Contact() {
 
             {/* Contact Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Honeypot fields - hidden from real users */}
+              <div className="absolute -left-[9999px] opacity-0 pointer-events-none" aria-hidden="true">
+                <label htmlFor="page-website">Website</label>
+                <input
+                  type="text"
+                  id="page-website"
+                  name="website"
+                  value={formData.website}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+                <label htmlFor="page-phone">Phone</label>
+                <input
+                  type="text"
+                  id="page-phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               {/* Name Field */}
               <div>
                 <label
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
-                  Your Name
+                  Your Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -170,6 +222,7 @@ export default function Contact() {
                     errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                   }`}
                   placeholder="John Doe"
+                  maxLength={100}
                 />
                 {errors.name && (
                   <p className="mt-1 text-sm text-red-500">{errors.name}</p>
@@ -182,7 +235,7 @@ export default function Contact() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
-                  Email Address
+                  Email Address <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
@@ -194,9 +247,35 @@ export default function Contact() {
                     errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                   }`}
                   placeholder="john@example.com"
+                  maxLength={254}
                 />
                 {errors.email && (
                   <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Subject Field */}
+              <div>
+                <label
+                  htmlFor="subject"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Subject <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-3 bg-white dark:bg-gray-800 border rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent transition-all shadow-sm ${
+                    errors.subject ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                  }`}
+                  placeholder="e.g., Booking Inquiry, Collaboration, General Question"
+                  maxLength={200}
+                />
+                {errors.subject && (
+                  <p className="mt-1 text-sm text-red-500">{errors.subject}</p>
                 )}
               </div>
 
@@ -206,7 +285,7 @@ export default function Contact() {
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
-                  Your Message
+                  Your Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="message"
@@ -218,10 +297,14 @@ export default function Contact() {
                     errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                   }`}
                   placeholder="Tell me about your project or inquiry..."
+                  maxLength={5000}
                 />
                 {errors.message && (
                   <p className="mt-1 text-sm text-red-500">{errors.message}</p>
                 )}
+                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 text-right">
+                  {formData.message.length}/5000
+                </p>
               </div>
 
               {/* Submit Button */}
@@ -286,6 +369,11 @@ export default function Contact() {
                   {status.message}
                 </div>
               )}
+
+              {/* Privacy Note */}
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                Your information is secure and will never be shared with third parties.
+              </p>
             </form>
           </div>
         </div>

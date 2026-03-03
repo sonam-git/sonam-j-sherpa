@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { YouTubeIcon, MusicNoteIcon } from './icons/SocialIcons';
 import { albumsData, getYouTubeVideoId, DEFAULT_CREDITS, Song } from '@/data/songs';
 import { HiXMark, HiChevronLeft, HiChevronRight, HiMusicalNote, HiPlay } from 'react-icons/hi2';
+import { IoDiscOutline, IoAlbumsOutline } from 'react-icons/io5';
 
 interface ModalSong extends Song {
   albumTitle: string;
@@ -15,6 +16,9 @@ interface ModalSong extends Song {
 export default function Albums() {
   const [activeAlbum, setActiveAlbum] = useState<string>(albumsData[0].id);
   const [modalSong, setModalSong] = useState<ModalSong | null>(null);
+  const [isSticky, setIsSticky] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const tabBarRef = useRef<HTMLDivElement>(null);
 
   const currentAlbum = albumsData.find((album) => album.id === activeAlbum);
 
@@ -25,6 +29,21 @@ export default function Albums() {
       .map((song, index) => ({ ...song, albumTitle: currentAlbum.title, index }))
       .filter((song) => song.youtubeUrl);
   }, [currentAlbum]);
+
+  // Sticky tab bar logic
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current || !tabBarRef.current) return;
+      const sectionRect = sectionRef.current.getBoundingClientRect();
+      const navbarHeight = window.innerWidth >= 768 ? 80 : 64;
+      const tabBarHeight = 70;
+      const inAlbumsSection = sectionRect.top < navbarHeight - 150 && sectionRect.bottom > navbarHeight + tabBarHeight + 100;
+      setIsSticky(inAlbumsSection);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Open modal with specific song
   const openModal = (song: Song, index: number) => {
@@ -91,7 +110,7 @@ export default function Albums() {
   const hasNext = currentSongIdx < currentAlbumSongs.length - 1;
 
   return (
-    <section id="albums" className="relative py-20 md:py-32 overflow-hidden transition-colors duration-300">
+    <section id="albums" ref={sectionRef} className="relative py-20 md:py-32 overflow-hidden transition-colors duration-300">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -113,22 +132,42 @@ export default function Albums() {
             <div className="w-24 h-1 bg-amber-400 mx-auto rounded-full mt-6" />
           </div>
 
-          {/* Album Tabs */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {albumsData.map((album) => (
-              <button
-                key={album.id}
-                onClick={() => setActiveAlbum(album.id)}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                  activeAlbum === album.id
-                    ? 'bg-amber-400 text-gray-900 shadow-lg shadow-amber-400/30'
-                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white shadow-sm'
-                }`}
-              >
-                {album.title}
-              </button>
-            ))}
+          {/* Album Tabs - Sticky */}
+          <div 
+            ref={tabBarRef}
+            className={`transition-all duration-300 mb-12 ${
+              isSticky 
+                ? 'fixed top-16 md:top-20 left-0 right-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md py-3 shadow-lg border-b border-amber-400/30' 
+                : ''
+            }`}
+          >
+            <div className={`flex justify-center ${isSticky ? 'container mx-auto px-4' : ''}`}>
+              <div className="flex gap-2 p-1.5 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+                {albumsData.map((album, index) => (
+                  <button
+                    key={album.id}
+                    onClick={() => setActiveAlbum(album.id)}
+                    className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 ${
+                      activeAlbum === album.id
+                        ? 'bg-amber-500 text-white shadow-md'
+                        : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    {index === 0 ? (
+                      <IoDiscOutline className="w-5 h-5" />
+                    ) : (
+                      <IoAlbumsOutline className="w-5 h-5" />
+                    )}
+                    <span className="hidden sm:inline">{album.title}</span>
+                    <span className="sm:hidden">{album.title.split(' ').slice(0, 2).join(' ')}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
+          
+          {/* Spacer when sticky */}
+          {isSticky && <div className="h-16" />}
 
           {/* Album Content */}
           {currentAlbum && (
@@ -157,45 +196,71 @@ export default function Albums() {
                 </div>
               </div>
 
-              {/* Song List */}
+              {/* Song List - Grid Layout */}
               <div className="bg-white dark:bg-gray-800/50 rounded-2xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 shadow-lg">
                 <div className="flex items-center gap-3 mb-6">
                   <MusicNoteIcon className="w-6 h-6 text-amber-500 dark:text-amber-400" />
                   <h4 className="text-xl font-semibold text-gray-900 dark:text-white">
-                    Track List {currentAlbum.songs.length} songs
+                    Track List <span className="text-amber-500">•</span> {currentAlbum.songs.length} songs
                   </h4>
                 </div>
-                <ul className="space-y-3">
+                
+                {/* 2-Column Grid */}
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {currentAlbum.songs.map((song, index) => (
-                    <li
+                    <button
                       key={song.title}
-                      className={`flex items-center justify-between p-4 rounded-lg bg-gray-100 dark:bg-gray-900/50 transition-all group ${
-                        song.youtubeUrl 
-                          ? 'hover:bg-amber-50 dark:hover:bg-amber-400/10 cursor-pointer hover:shadow-md' 
-                          : 'hover:bg-gray-200 dark:hover:bg-gray-900'
-                      }`}
                       onClick={() => song.youtubeUrl && openModal(song, index)}
+                      disabled={!song.youtubeUrl}
+                      className={`group relative flex flex-col items-center justify-center p-4 sm:p-5 rounded-xl border transition-all duration-300 text-center ${
+                        song.youtubeUrl 
+                          ? 'bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border-gray-200 dark:border-gray-700 hover:border-amber-400 dark:hover:border-amber-500 hover:shadow-lg hover:shadow-amber-500/10 cursor-pointer hover:-translate-y-1' 
+                          : 'bg-gray-100 dark:bg-gray-900/50 border-gray-200 dark:border-gray-800 opacity-60 cursor-not-allowed'
+                      }`}
                     >
-                      <div className="flex items-center gap-4">
-                        <span className="text-gray-400 dark:text-gray-500 font-mono text-sm w-6">
-                          {String(index + 1).padStart(2, '0')}
-                        </span>
-                        <span className="text-gray-700 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
-                          {song.title}
-                        </span>
-                      </div>
+                      {/* Track Number Badge */}
+                      <span className={`absolute top-2 left-2 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${
+                        song.youtubeUrl 
+                          ? 'bg-amber-400 text-gray-900' 
+                          : 'bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                      }`}>
+                        {index + 1}
+                      </span>
+                      
+                      {/* Play Icon */}
                       {song.youtubeUrl && (
-                        <button
-                          className="flex items-center gap-2 text-gray-500 group-hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-500/10"
-                          aria-label={`Watch ${song.title}`}
-                        >
-                          <HiPlay className="w-5 h-5" />
-                          <span className="text-sm font-medium hidden sm:inline">Watch</span>
-                        </button>
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-linear-to-br from-red-500 to-red-600 flex items-center justify-center mb-3 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                          <HiPlay className="w-6 h-6 sm:w-7 sm:h-7 text-white ml-0.5" />
+                        </div>
                       )}
-                    </li>
+                      
+                      {/* No Video Icon */}
+                      {!song.youtubeUrl && (
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center mb-3">
+                          <HiMusicalNote className="w-6 h-6 sm:w-7 sm:h-7 text-gray-500 dark:text-gray-400" />
+                        </div>
+                      )}
+                      
+                      {/* Song Title */}
+                      <span className={`text-sm sm:text-base font-medium leading-tight line-clamp-2 ${
+                        song.youtubeUrl 
+                          ? 'text-gray-800 dark:text-gray-200 group-hover:text-amber-600 dark:group-hover:text-amber-400' 
+                          : 'text-gray-500 dark:text-gray-500'
+                      }`}>
+                        {song.title}
+                      </span>
+                      
+                      {/* Watch Label */}
+                      {song.youtubeUrl && (
+                        <span className="mt-2 text-xs text-gray-500 dark:text-gray-400 group-hover:text-red-500 transition-colors flex items-center gap-1">
+                          <YouTubeIcon className="w-3 h-3" />
+                          Watch
+                        </span>
+                      )}
+                    </button>
                   ))}
-                </ul>
+                </div>
+                
                 <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
                   <a
                     href="https://www.youtube.com/@SonamJSherpaOfficial"
