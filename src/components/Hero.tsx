@@ -1,16 +1,21 @@
-import Link from 'next/link';
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import { YouTubeIcon } from './icons/SocialIcons';
 import VideoReel from './VideoReel';
+import ContactModal from './ContactModal';
 
 export default function Hero() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <section
       id="home"
-      className="relative flex flex-col overflow-hidden"
+      className="relative flex flex-col overflow-hidden lg:h-screen border-b-4 border-amber-400 shadow-[0_4px_20px_rgba(251,191,36,0.4)]"
     >
       {/* === LARGE SCREEN LAYOUT (Background Image with Overlay) === */}
-      <div className="hidden lg:block absolute inset-0 h-[calc(100vh-120px)]">
+      <div className="hidden lg:block absolute inset-0">
         {/* Background Image */}
         <Image
         src="/images/hero.png"
@@ -21,9 +26,9 @@ export default function Hero() {
           quality={90}
         />
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 dark:from-black/90 dark:via-black/70 dark:to-black/50" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/60 to-black/40 dark:from-black/90 dark:via-black/70 dark:to-black/50" />
         {/* Decorative gradient accent */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        <div className="absolute inset-0  bg-linear-to-r from-black/60 via-transparent to-transparent" />
       </div>
 
       {/* === SMALL SCREEN LAYOUT (Image as full background for top section) === */}
@@ -39,7 +44,7 @@ export default function Hero() {
           quality={85}
         />
         {/* Gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/40" />
+        <div className="absolute inset-0  bg-linear-to-r from-black/80 via-black/20 to-black/40" />
         
         {/* Content at bottom - replacing badges */}
         <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center px-4 text-center">
@@ -87,17 +92,17 @@ export default function Hero() {
             <YouTubeIcon className="w-5 h-5" />
             YouTube
           </a>
-          <Link
-            href="#contact"
+          <button
+            onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center gap-2 border-2 border-amber-500 dark:border-amber-400 text-amber-600 dark:text-amber-400 hover:bg-amber-500 dark:hover:bg-amber-400 hover:text-white dark:hover:text-gray-900 px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 hover:scale-105"
           >
             Contact Me
-          </Link>
+          </button>
         </div>
       </div>
 
       {/* === LARGE SCREEN CONTENT (Overlay Content) === */}
-      <div className="hidden lg:flex relative z-10 h-[calc(100vh-120px)] items-center">
+      <div className="hidden lg:flex relative z-10 flex-1 items-center pb-24">
         <div className="container mx-auto px-8 lg:px-16">
           <div className="max-w-2xl">
             {/* Greeting */}
@@ -106,10 +111,10 @@ export default function Hero() {
             </p>
 
             {/* Name */}
-            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-2 animate-slide-up">
+            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-2 animate-slide-up lugrasimo-regular">
               Sonam J Sherpa
             </h1>
-            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white/90 mb-6 animate-slide-up">
+            <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold text-white/90 mb-6 animate-slide-up lugrasimo-regular">
               བསོད་ནམས་ ཇེ ་ཤེར་པ་
             </h2>
 
@@ -136,8 +141,8 @@ sharing stories through music and preserving Sherpa melodies for future generati
                 <YouTubeIcon className="w-6 h-6" />
                 Listen on YouTube
               </a>
-              <Link
-                href="#contact"
+              <button
+                onClick={() => setIsModalOpen(true)}
                 className="group inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border-2 border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-gray-900 px-8 py-4 rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105"
               >
                 Contact Me
@@ -154,16 +159,22 @@ sharing stories through music and preserving Sherpa melodies for future generati
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </Link>
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* === LARGE SCREEN VIDEO REEL (Bottom of Hero) === */}
-      <div className="hidden lg:block relative z-10 h-30">
+      <div className="hidden lg:block absolute bottom-0 left-0 right-0 z-10">
         <VideoReel />
       </div>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </section>
   );
 }

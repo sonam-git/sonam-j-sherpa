@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display, Lugrasimo } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -16,6 +16,13 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const lugrasimo = Lugrasimo({
+  variable: "--font-lugrasimo",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
 export const viewport: Viewport = {
   themeColor: "#111827",
   width: "device-width",
@@ -29,7 +36,7 @@ export const metadata: Metadata = {
     template: "%s | Sonam J Sherpa",
   },
   description:
-    "Sonam J Sherpa is a professional singer and full-stack developer from the Everest Region of Nepal, now based in California, USA. Explore his music, albums, and performances.",
+    "Sonam J Sherpa is a professional singer and musician from the Everest Region of Nepal, now based in California, USA. Explore his music, albums, and performances.",
   keywords: [
     "Sonam J Sherpa",
     "Sherpa singer",
@@ -37,10 +44,10 @@ export const metadata: Metadata = {
     "Nepali music",
     "Sherpa music",
     "Sonaming album",
-    "Khumjung",
+    "singer from Khumjung",
     "Everest region",
     "Nepal musician",
-    "Full-stack developer",
+    "traditional sherpa singer",
   ],
   authors: [{ name: "Sonam J Sherpa" }],
   creator: "Sonam J Sherpa",
@@ -49,7 +56,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://sonamjsherpa.com",
     siteName: "Sonam J Sherpa",
-    title: "Sonam J Sherpa | Singer, Performer & Full-Stack Developer",
+    title: "Sonam J Sherpa | Singer | Musician",
     description:
       "Professional singer from the Everest Region of Nepal, bringing Sherpa and Nepali music to the world.",
     images: [
@@ -57,13 +64,13 @@ export const metadata: Metadata = {
         url: "/images/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sonam J Sherpa - Singer & Performer",
+        alt: "Sonam J Sherpa - Singer & Musician",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sonam J Sherpa | Singer, Performer & Full-Stack Developer",
+    title: "Sonam J Sherpa | Singer | Musician",
     description:
       "Professional singer from the Everest Region of Nepal, bringing Sherpa and Nepali music to the world.",
     images: ["/images/og-image.jpg"],
@@ -89,7 +96,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
+        className={`${inter.variable} ${playfair.variable} ${lugrasimo.variable} font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
       >
         <ThemeProvider>
           <Navbar />

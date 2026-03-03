@@ -114,7 +114,7 @@ export default function Contact() {
         <div className="max-w-4xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 lugrasimo-regular">
               Get In Touch
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
@@ -145,34 +145,6 @@ export default function Contact() {
                   <div>
                     <p className="text-gray-500 dark:text-gray-400 text-sm">Email</p>
                     <p className="text-gray-900 dark:text-white">contact@sonamjsherpa.com</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-400/10 rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-purple-600 dark:text-purple-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">Location</p>
-                    <p className="text-gray-900 dark:text-white">California, USA</p>
                   </div>
                 </div>
               </div>

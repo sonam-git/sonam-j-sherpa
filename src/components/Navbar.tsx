@@ -20,7 +20,7 @@ import { HiXMark, HiBars3 } from 'react-icons/hi2';
 const navLinks = [
   { href: '#home', label: 'Home', icon: HiHome },
   { href: '#about', label: 'About', icon: HiUser },
-  { href: '#career', label: 'Career', icon: HiClock },
+  { href: '#events', label: 'Event', icon: HiClock },
   { href: '#albums', label: 'Albums', icon: HiMusicNote },
   { href: '#gallery', label: 'Gallery', icon: HiPhotograph },
   { href: '#spotlight', label: 'Spotlight', icon: HiSparkles },

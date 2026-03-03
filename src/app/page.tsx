@@ -1,6 +1,6 @@
 import Hero from '@/components/Hero';
 import About from '@/components/About';
-import Timeline from '@/components/Timeline';
+import Events from '@/components/Events';
 import Albums from '@/components/Albums';
 import Gallery from '@/components/Gallery';
 import Spotlight from '@/components/Spotlight';
@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <Hero />
       <About />
-      <Timeline />
+      <Events />
       <Albums />
       <Gallery />
       <Spotlight />

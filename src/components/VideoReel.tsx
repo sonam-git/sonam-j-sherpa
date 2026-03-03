@@ -170,7 +170,7 @@ export default function VideoReel() {
       {/* Video Modal - rendered via portal to ensure it's above everything */}
       {selectedSong && typeof window !== 'undefined' && createPortal(
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6"
           onClick={closeModal}
         >
           {/* Backdrop */}
@@ -181,10 +181,13 @@ export default function VideoReel() {
             className="relative w-full max-w-4xl bg-gray-900 rounded-2xl overflow-hidden shadow-2xl animate-fade-in"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close button */}
+            {/* Close button - hidden on small screens, visible on large */}
             <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeModal();
+              }}
+              className="hidden sm:block absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
               aria-label="Close modal"
             >
               <HiX className="w-6 h-6" />

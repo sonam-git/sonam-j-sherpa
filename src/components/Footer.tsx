@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   YouTubeIcon,
   FacebookIcon,
@@ -33,7 +34,7 @@ const footerLinks = {
     },
     {
       name: 'TikTok',
-      href: '#',
+      href: 'https://www.tiktok.com/@sonamjsherpaOfficial',
       icon: TikTokIcon,
     },
   ],
@@ -43,14 +44,23 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-100 dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+    <footer className="bg-amber-50 dark:bg-amber-950 border-t border-amber-200 dark:border-amber-900 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid md:grid-cols-3 gap-10">
           {/* Brand */}
           <div className="space-y-4">
+            <Link href="#home" className="block">
+              <Image
+                src="/images/sonam-logo.png"
+                alt="Sonam J Sherpa Logo"
+                width={100}
+                height={100}
+                className="rounded-full"
+              />
+            </Link>
             <Link
               href="#home"
-              className="text-2xl font-bold text-gray-900 dark:text-white hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
+              className="block text-2xl font-bold text-gray-900 dark:text-white hover:text-amber-500 dark:hover:text-amber-400 transition-colors lugrasimo-regular"
             >
               Sonam J Sherpa
             </Link>
@@ -107,9 +117,7 @@ export default function Footer() {
             © {currentYear} Sonam J Sherpa. All rights reserved.
           </p>
           <p className="text-gray-500 dark:text-gray-600 text-sm">
-            Made with{' '}
-            <span className="text-red-500">♥</span>{' '}
-            using Next.js & Tailwind CSS
+            Developed with Next.js & Tailwind CSS
           </p>
         </div>
       </div>

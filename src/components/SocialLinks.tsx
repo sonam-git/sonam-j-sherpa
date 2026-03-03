@@ -45,11 +45,11 @@ export default function SocialLinks() {
         style={{ backgroundImage: "url('/images/about-photo.jpg')", opacity: 0.12 }}
       />
       {/* Theme-aware Overlay */}
-      <div className="absolute inset-0 bg-gray-200/70 dark:bg-gray-800/80 pointer-events-none" />
+       <div className="absolute inset-0 bg-white/5 dark:bg-gray-900/10" />
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           {/* Section Header */}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 lugrasimo-regular">
             Connect With Me
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-lg mb-10">
