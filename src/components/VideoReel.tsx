@@ -226,18 +226,14 @@ export default function VideoReel() {
               </div>
 
               {/* Credits */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-sm">
                 <div className="bg-gray-800/50 rounded-lg p-3">
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Music & Composition</p>
-                  <p className="text-white font-medium">{selectedSong.composer || DEFAULT_CREDITS.composer}</p>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Music</p>
+                  <p className="text-white font-medium">{selectedSong.music || DEFAULT_CREDITS.music}</p>
                 </div>
                 <div className="bg-gray-800/50 rounded-lg p-3">
                   <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Lyrics</p>
                   <p className="text-white font-medium">{selectedSong.lyricist || DEFAULT_CREDITS.lyricist}</p>
-                </div>
-                <div className="bg-gray-800/50 rounded-lg p-3">
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Artist</p>
-                  <p className="text-white font-medium">{selectedSong.music || DEFAULT_CREDITS.music}</p>
                 </div>
               </div>
 

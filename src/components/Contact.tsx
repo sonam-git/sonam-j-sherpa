@@ -130,10 +130,10 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-20 md:py-32 overflow-hidden transition-colors duration-300">
-      {/* Background Image */}
+     {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/sj-logo.png')", opacity: 0.15 }}
+        style={{ backgroundImage: "url('/images/about-photo.jpg')", opacity: 0.20 }}
       />
       {/* Theme-aware Overlay */}
       <div className="absolute inset-0 bg-gray-100/70 dark:bg-gray-900/80 pointer-events-none" />

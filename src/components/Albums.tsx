@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { YouTubeIcon, MusicNoteIcon } from './icons/SocialIcons';
 import { albumsData, getYouTubeVideoId, DEFAULT_CREDITS, Song } from '@/data/songs';
 import { HiXMark, HiChevronLeft, HiChevronRight, HiMusicalNote, HiPlay } from 'react-icons/hi2';
-import { IoDiscOutline, IoAlbumsOutline } from 'react-icons/io5';
+import { IoDiscOutline, IoAlbumsOutline, IoMicOutline } from 'react-icons/io5';
 
 interface ModalSong extends Song {
   albumTitle: string;
@@ -155,11 +155,13 @@ export default function Albums() {
                   >
                     {index === 0 ? (
                       <IoDiscOutline className="w-5 h-5" />
-                    ) : (
+                    ) : index === 1 ? (
                       <IoAlbumsOutline className="w-5 h-5" />
+                    ) : (
+                      <IoMicOutline className="w-5 h-5" />
                     )}
                     <span className="hidden sm:inline">{album.title}</span>
-                    <span className="sm:hidden">{album.title.split(' ').slice(0, 2).join(' ')}</span>
+                    <span className="sm:hidden">{album.id === 'cover-songs' ? 'Covers' : album.title.split(' ').slice(0, 2).join(' ')}</span>
                   </button>
                 ))}
               </div>
@@ -343,21 +345,27 @@ export default function Albums() {
                 </p>
               </div>
 
-              {/* Credits */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-sm">
-                <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Music & Composition</p>
-                  <p className="text-white font-medium">
-                    {modalSong.music || DEFAULT_CREDITS.music}
-                  </p>
+              {/* Credits - Show text for cover songs, music/lyrics for originals */}
+              {modalSong.text ? (
+                <div className="bg-gray-800/50 rounded-lg p-4 mb-4 border border-gray-700/50">
+                  <p className="text-gray-300 text-sm italic">{modalSong.text}</p>
                 </div>
-                <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
-                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Lyrics</p>
-                  <p className="text-white font-medium">
-                    {modalSong.lyricist || DEFAULT_CREDITS.lyricist}
-                  </p>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-sm">
+                  <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
+                    <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Music & Composition</p>
+                    <p className="text-white font-medium">
+                      {modalSong.music || DEFAULT_CREDITS.music}
+                    </p>
+                  </div>
+                  <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700/50">
+                    <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Lyrics</p>
+                    <p className="text-white font-medium">
+                      {modalSong.lyricist || DEFAULT_CREDITS.lyricist}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Navigation Buttons */}
               <div className="flex items-center justify-center gap-4 pt-4 border-t border-gray-800">

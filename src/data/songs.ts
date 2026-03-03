@@ -4,6 +4,7 @@ export interface Song {
   composer?: string;
   lyricist?: string;
   music?: string;
+  text?: string; // For cover songs or songs without YouTube links, to provide additional context or credits
 }
 
 export interface Album {
@@ -134,6 +135,51 @@ export const albumsData: Album[] = [
         youtubeUrl: 'https://youtu.be/C7I-1DlTTFg?si=kuiwTNqGkgeyTy2G',
         music: 'Sonam J Sherpa',
         lyricist: 'Sonam J Sherpa'
+      },
+      {
+        title: 'Gomba Tena',
+        youtubeUrl: 'https://youtu.be/iybE7WpIV40?si=BBYmKxqmrviJQEUz',
+        music: 'Sonam J Sherpa',
+        lyricist: 'Sonam J Sherpa'
+      },
+    ],
+  },
+  {
+    id: 'cover-songs',
+    title: 'Cover Songs',
+    year: '2016',
+    language: 'Tibetan',
+    coverImage: '/images/about-photo.jpg',
+    songs: [
+      { 
+        title: 'Emaa Lenchik', 
+        youtubeUrl: 'https://youtu.be/Ek0eXDe80Kw?si=CCopnKyrcRQzq9FI',
+        text: 'All credit goes to the original artists and composers of these traditional Tibetan songs.',
+      },
+      { 
+        title: 'Kharik Ri', 
+        youtubeUrl: 'https://youtu.be/eH2WHXQtxI0?si=EFPxWzHE7Uy7kX_c',
+        text: 'All credit goes to the original artists and composers of these traditional Tibetan songs.',
+      },
+      {
+          title: 'Phuyi Khangri Karpo | Ama Lenchik',
+          youtubeUrl: 'https://youtu.be/UiPwhfKbiWc?si=4bcmMY5YzrjoDwSb',
+          text: 'All credit goes to the original artists and composers of these traditional Tibetan songs.',
+      },
+      { 
+        title: 'Dolma Lhakhang', 
+        youtubeUrl: 'https://youtu.be/ZEMeDtkbC4E?si=2Ze9EZ7HSv5Z8SXl',
+        text: 'All credit goes to the original artists and composers of these traditional Tibetan songs.',
+      },
+      { 
+        title: 'Yarki Thramo', 
+        youtubeUrl: 'https://youtu.be/U5jdUOyBy2M?si=qRQ8qGEHY-p3SmC1',
+        text: 'All credit goes to the original artists and composers of these traditional Tibetan songs.',
+      },
+      { 
+        title: 'Oh kanchha', 
+        youtubeUrl: 'https://youtu.be/skFmkuzRZg8?si=m6vkwMsMMJkYV3EE',
+        text: 'All credit goes to the original artists and composers of these traditional Tibetan songs.',
       },
     ],
   },
