@@ -88,6 +88,12 @@ export const albumsData: Album[] = [
     language: 'Sherpa Songs',
     coverImage: '/images/album-sonaming-vol2.png',
     songs: [
+          { 
+        title: 'Sherpa Medley Song', 
+        youtubeUrl: 'https://youtu.be/IUCccAjw6sA?si=bMrrEpnxPHcozf69',
+        music: 'Sonam J Sherpa',
+        lyricist: 'Sonam J Sherpa | Ngawang T Sherpa | Mingma P Sherpa '
+      },
       { 
         title: 'Kesangla', 
         youtubeUrl: 'https://youtu.be/pAr5fsZ13To?si=ppziLCtsljmbPU3R',
