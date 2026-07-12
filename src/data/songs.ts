@@ -89,6 +89,12 @@ export const albumsData: Album[] = [
     coverImage: '/images/album-sonaming-vol2.png',
     songs: [
           { 
+        title: 'Sherpa Traditional Song', 
+        youtubeUrl: ' https://youtu.be/l6yMDMDAoW0',
+        music: 'Sonam J Sherpa',
+        lyricist: 'Ngawang T Sherpa | Ven Tenzin K Sherpa '
+      },
+          { 
         title: 'Sherpa Medley Song', 
         youtubeUrl: 'https://youtu.be/IUCccAjw6sA?si=bMrrEpnxPHcozf69',
         music: 'Sonam J Sherpa',
