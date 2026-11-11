@@ -88,8 +88,20 @@ export const albumsData: Album[] = [
     language: 'Sherpa Songs',
     coverImage: '/images/album-sonaming-vol2.png',
     songs: [
+           { 
+        title: 'Thalo Lomo Lesung', 
+        youtubeUrl: ' https://youtu.be/-WfgcXvNM9c?si=xxjSoJH7iSWBhUIR',
+        music: 'Sonam J Sherpa',
+        lyricist: 'Ven Tenzin K Sherpa '
+      },
+           { 
+        title: 'SungThamyu - Gyenja | Chhisu - Rimo', 
+        youtubeUrl: ' https://youtu.be/3B_LVdaHVp0?si=MH98mYfD6GrTBvUs',
+        music: 'Sonam J Sherpa',
+        lyricist: 'Ngawang T Sherpa | Ven Tenzin K Sherpa '
+      },
           { 
-        title: 'Sherpa Traditional Song', 
+        title: 'DrikShyawa | Tashi-Sol-Lu', 
         youtubeUrl: ' https://youtu.be/l6yMDMDAoW0',
         music: 'Sonam J Sherpa',
         lyricist: 'Ngawang T Sherpa | Ven Tenzin K Sherpa '
