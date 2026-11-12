@@ -90,19 +90,17 @@ export default function About() {
             <div className="w-24 h-1 bg-amber-500 dark:bg-amber-400 mx-auto rounded-full" />
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <div className="grid lg:grid-cols-[1fr_3fr] gap-12 lg:gap-16 items-start">
             {/* Image */}
             <div className="relative lg:sticky lg:top-24">
-              <div className="relative aspect-4/5 rounded-2xl overflow-hidden shadow-xl">
+              <div className="relative aspect-4/5 lg:aspect-[4/5.5] rounded-2xl overflow-hidden ">
                 <Image
-                  src="/images/about-photo.jpg"
+                  src="/images/intro-image.png"
                   alt="Sonam J Sherpa performing"
                   fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover  "
+                  sizes="(max-width: 1024px) 100vw, 25vw"
                 />
-                {/* Decorative Border */}
-                <div className="absolute inset-0 border-2 border-amber-500/30 dark:border-amber-400/30 rounded-2xl" />
               </div>
               {/* Decorative Element */}
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-amber-400/30 dark:bg-amber-400/20 rounded-full blur-2xl" />
@@ -178,7 +176,7 @@ export default function About() {
                   </div>
 
                   <p className="text-gray-800 dark:text-gray-100 text-base sm:text-md leading-relaxed">
-                    My first major performance took place during an event Sherpa Star in Boudha, Kathmandu, a moment that opened doors
+                    My first major performance took place during an event Sherpa Star in Boudha , Kathmandu around 2007 AD, a moment that opened doors
                     to many new opportunities. Over the years, I have performed
                     across Nepal — from Tatopani, Sindhupalchowk to Dolakha Jiri
                     and my hometown Solukhumbu Khumjung — connecting with

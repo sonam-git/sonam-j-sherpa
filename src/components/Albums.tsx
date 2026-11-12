@@ -19,8 +19,19 @@ export default function Albums() {
   const [isSticky, setIsSticky] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const tabBarRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const currentAlbum = albumsData.find((album) => album.id === activeAlbum);
+
+  useEffect(() => {
+    if (window.innerWidth < 640) {
+      tabRefs.current[activeAlbum]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [activeAlbum]);
 
   // Memoize current album songs to avoid re-renders
   const currentAlbumSongs = useMemo(() => {
@@ -142,16 +153,20 @@ export default function Albums() {
             }`}
           >
             <div className={`flex justify-center ${isSticky ? 'container mx-auto px-4' : ''}`}>
-              <div className="flex gap-2 p-1.5 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+              <div className="max-w-full overflow-x-auto overscroll-x-contain touch-pan-x rounded-xl">
+                <div className="flex w-max min-w-full justify-start sm:justify-center gap-2 p-1.5 bg-white dark:bg-gray-800 rounded-xl shadow-md">
                 {albumsData.map((album, index) => (
                   <button
                     key={album.id}
+                    ref={(element) => {
+                      tabRefs.current[album.id] = element;
+                    }}
                     onClick={() => setActiveAlbum(album.id)}
                     className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all duration-300 ${
                       activeAlbum === album.id
                         ? 'bg-amber-500 text-white shadow-md'
                         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                    }`}
+                    } shrink-0 whitespace-nowrap`}
                   >
                     {index === 0 ? (
                       <IoDiscOutline className="w-5 h-5" />
@@ -164,6 +179,7 @@ export default function Albums() {
                     <span className="sm:hidden">{album.id === 'cover-songs' ? 'Covers' : album.title.split(' ').slice(0, 2).join(' ')}</span>
                   </button>
                 ))}
+                </div>
               </div>
             </div>
           </div>
